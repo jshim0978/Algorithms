@@ -50,9 +50,9 @@ public class bfsdfs { // 11049 행렬 곱셈 순서
 
     static List<List<Integer>> adjacentcyListData;
 
-    private static void initList(int lengthOfList){
+    private static void initList(int lengthOfList) {
         adjacentcyListData = new ArrayList<>();
-        for (int index =0; index < lengthOfList; index++) {
+        for (int index = 0; index < lengthOfList; index++) {
             adjacentcyListData.add(new ArrayList<>());
         }
     }
@@ -62,10 +62,10 @@ public class bfsdfs { // 11049 행렬 곱셈 순서
 
 
     static void dfsRecursive(int startingNode) {
-    //doing this recursively
+        //doing this recursively
         if (isRevisit[startingNode])
             return;
-        isRevisit[startingNode]= true;
+        isRevisit[startingNode] = true;
         System.out.print(startingNode + " ");
         //for the next nodes in the problem's format
         for (int connectedNode : adjacentcyListData.get(startingNode)) {
@@ -92,31 +92,37 @@ public class bfsdfs { // 11049 행렬 곱셈 순서
             //first pop would be starting node then the next one in the stack and so on
             System.out.print(whatsNext + " ");
             //if its in the stack, we visited it
-            for (int connectedNode : adjacentcyListData.get(whatsNext)) {
-                //for every connected node of current node and the lookups of the adjacentcy list
-                //in stack, we only need the first one.
+            addToStackOneAtATime(stack, whatsNext);
+        }
+    }
+    private static void addToStackOneAtATime(Stack<Integer> givenStack, int whatsNext){
+        for (int connectedNode : adjacentcyListData.get(whatsNext)) {
+            //for every connected node of current node and the lookups of the adjacentcy list
+            //in stack, we only need the first one.
 
-                if (!isRevisit[connectedNode]) {
-                    //if we didnt visit the node,
-                    stack.push(connectedNode);
-                    //add it to the stack and lookup from there
-                    isRevisit[connectedNode] = true;
-                    //since its in the queue, we dont want to revisit it
-                    if(stack.size() > 1){
-                        stack.pop();
-                        //since for each searches from bottom up, the first one is the one we want so pop everything else
-                        isRevisit[connectedNode] = false;
-                        //we didnt visit it so remove it from the revisit list
-                    }
-
-                }
+            if (!isRevisit[connectedNode]) {
+                //if we didnt visit the node,
+                givenStack.push(connectedNode);
+                //add it to the stack and lookup from there
+                isRevisit[connectedNode] = true;
+                //since its in the queue, we dont want to revisit it
+                oneAtATime(givenStack, connectedNode);
 
             }
+
+        }
+    }
+    private static void oneAtATime(Stack<Integer> StackBiggerThan2, int connectedNode){
+        if (StackBiggerThan2.size() > 1) {
+            StackBiggerThan2.pop();
+            //since for each searches from bottom up, the first one is the one we want so pop everything else
+            isRevisit[connectedNode] = false;
+            //we didnt visit it so remove it from the revisit list
         }
     }
 
     static void bfs(int startingNode) {
-    //doing this with queue
+        //doing this with queue
         Queue<Integer> queue = new LinkedList<>();
         //Generic? i guess
         queue.add(startingNode);
@@ -129,15 +135,21 @@ public class bfsdfs { // 11049 행렬 곱셈 순서
             //first remove would be starting node then the next one in the queue and so on
             System.out.print(whatsNext + " ");
             //if its in the queue, we visited it
-            for (int connectedNode : adjacentcyListData.get(whatsNext)) {
-                //for every connected node of current node and the lookups of the adjacentcy list
-                if (!isRevisit[connectedNode]) {
-                    //if we didnt visit the node,
-                    queue.add(connectedNode);
-                    //add it to the queue and lookup from there
-                    isRevisit[connectedNode] = true;
-                    //since its in the queue, we dont want to revisit it
-                }
+            addToQueue(queue, whatsNext);
+
+        }
+    }
+
+    private static void addToQueue(Queue<Integer> givenQueue, int whatsNext) {
+
+        for (int connectedNode:
+             adjacentcyListData.get(whatsNext)) {
+            if (!isRevisit[connectedNode]) {
+                //if we didnt visit the node,
+                givenQueue.add(connectedNode);
+                //add it to the queue and lookup from there
+                isRevisit[connectedNode] = true;
+                //since its in the queue, we dont want to revisit it
             }
         }
     }
@@ -149,11 +161,11 @@ public class bfsdfs { // 11049 행렬 곱셈 순서
         int startingNode = nextInt();
         //vertexes, edges, and the starting node in the first three integers
 
-        initList(vertexes+1);
+        initList(vertexes + 1);
         //has to cast for some reason, did vertexes + 1 for easy mapping 1~n instead of 0~n-1
 
 
-        for (int i=0;i<edges;i++) {
+        for (int i = 0; i < edges; i++) {
             int thisIsConnected = nextInt();
             int withThisNode = nextInt();
             adjacentcyListData.get(thisIsConnected).add(withThisNode);
@@ -161,19 +173,19 @@ public class bfsdfs { // 11049 행렬 곱셈 순서
             //5 4 is the same edge as 4 5 we just need to remember we visited for no errors
         }
 
-        for (int i=1;i<=vertexes;i++)
+        for (int i = 1; i <= vertexes; i++)
             Collections.sort(adjacentcyListData.get(i));
         //sorting i think in bubble sort because we visit the smaller value first
 
-        isRevisit = new boolean[vertexes+1];
+        isRevisit = new boolean[vertexes + 1];
         //emptying revisiting list
         dfsRecursive(startingNode);
         System.out.println();
-        isRevisit = new boolean[vertexes+1];
+        isRevisit = new boolean[vertexes + 1];
         //emptying revisiting list
-//        dfsStack(startingNode);
+        dfsStack(startingNode);
         System.out.println();
-        isRevisit = new boolean[vertexes+1];
+        isRevisit = new boolean[vertexes + 1];
         //emptying revisiting list
         bfs(startingNode);
 
