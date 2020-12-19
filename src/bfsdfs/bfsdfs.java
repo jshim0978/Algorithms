@@ -48,7 +48,14 @@ public class bfsdfs { // 11049 행렬 곱셈 순서
     }
 
 
-    static ArrayList<Integer>[] adjacentcyList;
+    static List<List<Integer>> adjacentcyListData;
+
+    private static void initList(int lengthOfList){
+        adjacentcyListData = new ArrayList<>();
+        for (int index =0; index < lengthOfList; index++) {
+            adjacentcyListData.add(new ArrayList<>());
+        }
+    }
     //saving connected nodes
 
     static boolean[] isRevisit;
@@ -61,7 +68,7 @@ public class bfsdfs { // 11049 행렬 곱셈 순서
         isRevisit[startingNode]= true;
         System.out.print(startingNode + " ");
         //for the next nodes in the problem's format
-        for (int connectedNode : adjacentcyList[startingNode]) {
+        for (int connectedNode : adjacentcyListData.get(startingNode)) {
             //in the adjacentcy list, search for connected nodes of the starting node
             if (!isRevisit[connectedNode]) {
                 dfsRecursive(connectedNode);
@@ -69,6 +76,8 @@ public class bfsdfs { // 11049 행렬 곱셈 순서
             }
         }
     }
+
+
     static void dfsStack(int startingNode) {
         //doing this with queue
         Stack<Integer> stack = new Stack<Integer>();
@@ -83,7 +92,7 @@ public class bfsdfs { // 11049 행렬 곱셈 순서
             //first pop would be starting node then the next one in the stack and so on
             System.out.print(whatsNext + " ");
             //if its in the stack, we visited it
-            for (int connectedNode : adjacentcyList[whatsNext]) {
+            for (int connectedNode : adjacentcyListData.get(whatsNext)) {
                 //for every connected node of current node and the lookups of the adjacentcy list
                 //in stack, we only need the first one.
 
@@ -108,7 +117,7 @@ public class bfsdfs { // 11049 행렬 곱셈 순서
 
     static void bfs(int startingNode) {
     //doing this with queue
-        Queue<Integer> queue = new LinkedList<Integer>();
+        Queue<Integer> queue = new LinkedList<>();
         //Generic? i guess
         queue.add(startingNode);
         //starting at startingNode
@@ -120,7 +129,7 @@ public class bfsdfs { // 11049 행렬 곱셈 순서
             //first remove would be starting node then the next one in the queue and so on
             System.out.print(whatsNext + " ");
             //if its in the queue, we visited it
-            for (int connectedNode : adjacentcyList[whatsNext]) {
+            for (int connectedNode : adjacentcyListData.get(whatsNext)) {
                 //for every connected node of current node and the lookups of the adjacentcy list
                 if (!isRevisit[connectedNode]) {
                     //if we didnt visit the node,
@@ -139,23 +148,21 @@ public class bfsdfs { // 11049 행렬 곱셈 순서
         int edges = nextInt();
         int startingNode = nextInt();
         //vertexes, edges, and the starting node in the first three integers
-        adjacentcyList = (ArrayList<Integer>[]) new ArrayList[vertexes+1];
+
+        initList(vertexes+1);
         //has to cast for some reason, did vertexes + 1 for easy mapping 1~n instead of 0~n-1
-        for (int i=1;i<=vertexes;i++) {
-            adjacentcyList[i] = new ArrayList<Integer>();
-            //so i make a list for every node and im going to put every connected nodes in them
-        }
+
 
         for (int i=0;i<edges;i++) {
             int thisIsConnected = nextInt();
             int withThisNode = nextInt();
-            adjacentcyList[thisIsConnected].add(withThisNode);
-            adjacentcyList[withThisNode].add(thisIsConnected);
+            adjacentcyListData.get(thisIsConnected).add(withThisNode);
+            adjacentcyListData.get(withThisNode).add(thisIsConnected);
             //5 4 is the same edge as 4 5 we just need to remember we visited for no errors
         }
 
         for (int i=1;i<=vertexes;i++)
-            Collections.sort(adjacentcyList[i]);
+            Collections.sort(adjacentcyListData.get(i));
         //sorting i think in bubble sort because we visit the smaller value first
 
         isRevisit = new boolean[vertexes+1];
@@ -164,7 +171,7 @@ public class bfsdfs { // 11049 행렬 곱셈 순서
         System.out.println();
         isRevisit = new boolean[vertexes+1];
         //emptying revisiting list
-        dfsStack(startingNode);
+//        dfsStack(startingNode);
         System.out.println();
         isRevisit = new boolean[vertexes+1];
         //emptying revisiting list
