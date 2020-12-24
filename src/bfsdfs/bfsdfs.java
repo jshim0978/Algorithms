@@ -48,12 +48,12 @@ public class bfsdfs { // 11049 행렬 곱셈 순서
     }
 
 
-    static List<List<Integer>> adjacentcyListData;
+    static Map<Integer, List<Integer>> adjacentcyListData;
 
     private static void initList(int lengthOfList) {
-        adjacentcyListData = new ArrayList<>();
+        adjacentcyListData = new HashMap<>();
         for (int index = 0; index < lengthOfList; index++) {
-            adjacentcyListData.add(new ArrayList<>());
+            adjacentcyListData.put(index, new ArrayList<>());
         }
     }
     //saving connected nodes
@@ -188,6 +188,7 @@ public class bfsdfs { // 11049 행렬 곱셈 순서
         isRevisit = new boolean[vertexes + 1];
         //emptying revisiting list
         bfs(startingNode);
+
 
     }
 
