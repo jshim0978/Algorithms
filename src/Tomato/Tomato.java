@@ -37,10 +37,10 @@ class Tomato {
                 storage[i][j] = Integer.parseInt(st.nextToken());
             }
         }
-        bfs();
+        System.out.println(bfs());
     }
 
-    static void bfs() {
+    static int bfs() {
         Queue<Tomato.Tomato.Coordinates> queue = new LinkedList<>();
         //create queue by coordinates (x,y,day)
         int day = 0;
@@ -61,9 +61,8 @@ class Tomato {
             checkFourDirections(coordinates, queue, day);
         }
         if(allTomatoesAreRipe())
-            System.out.println(day);
-        else
-            System.out.println(-1);
+            return day;
+        return -1;
     }
 
     static void checkFourDirections(Tomato.Tomato.Coordinates coordinates, Queue<Tomato.Tomato.Coordinates> queue, int day) {
