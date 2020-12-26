@@ -125,19 +125,19 @@ class Bridging {
             //check 4 directions
             //first direction is (1,0) which is the coordinates right side
             //second is left side, third is up , fourth is down
-            int next_X = coordinates.x + DIRECTION_X[i];
-            int next_Y = coordinates.y + DIRECTION_Y[i];
+            int nextX = coordinates.x + DIRECTION_X[i];
+            int nextY = coordinates.y + DIRECTION_Y[i];
             //this if state is if next X and next Y is in the 2d array
-            if (0 <= next_X && next_X < size && 0 <= next_Y && next_Y < size) {
+            if (0 <= nextX && nextX < size && 0 <= nextY && nextY < size) {
                 //if the neighboring coordinates is water,
-                if (distance[next_X][next_Y] == -1) {
+                if (distance[nextX][nextY] == -1) {
                     //increment the distance of the neighboring coordinates from current coordinates -> this means its the edge
-                    distance[next_X][next_Y] = distance[coordinates.x][coordinates.y] + 1;
+                    distance[nextX][nextY] = distance[coordinates.x][coordinates.y] + 1;
                     //now lets say that the water on the edge is also part of the continent
                     //this shows the distance to another continent of every coordinate
-                    continents[next_X][next_Y] = continents[coordinates.x][coordinates.y];
+                    continents[nextX][nextY] = continents[coordinates.x][coordinates.y];
                     //and add these coordinates to the queue, judging how much water there is between continents
-                    queue.add(new Bridging.Bridging.Coordinates(next_X, next_Y));
+                    queue.add(new Bridging.Bridging.Coordinates(nextX, nextY));
                 }
             }
         }
