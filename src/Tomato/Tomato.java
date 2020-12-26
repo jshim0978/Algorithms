@@ -59,9 +59,11 @@ class Tomato {
             day = coordinates.day;
             //check the day ; initially 0
             checkFourDirections(coordinates, queue, day);
+
         }
         if(allTomatoesAreRipe())
             return day;
+
         return -1;
     }
 
@@ -97,6 +99,7 @@ class Tomato {
                     return false;
             }
         }
+
         return true;
     }
 }
