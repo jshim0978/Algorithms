@@ -1,4 +1,4 @@
-package Tomato;
+package tomato;
 
 import java.util.*;
 import java.io.*;
@@ -41,7 +41,7 @@ class Tomato {
     }
 
     static int bfs() {
-        Queue<Tomato.Tomato.Coordinates> queue = new LinkedList<>();
+        Queue<Coordinates> queue = new LinkedList<>();
         //create queue by coordinates (x,y,day)
         int day = 0;
         //finding initial tomatoes
@@ -49,12 +49,12 @@ class Tomato {
             for(int j = 0; j< column; j++) {
                 if(storage[i][j] == 1)
                     //if it is a 1
-                    queue.add(new Tomato.Tomato.Coordinates(i, j, 0));
+                    queue.add(new Coordinates(i, j, 0));
                     //add to queue
             }
         }
         while(!queue.isEmpty()) {
-            Tomato.Tomato.Coordinates coordinates = queue.poll();
+            Coordinates coordinates = queue.poll();
             //pop() for queue
             day = coordinates.day;
             //check the day ; initially 0
@@ -67,7 +67,7 @@ class Tomato {
         return -1;
     }
 
-    static void checkFourDirections(Tomato.Tomato.Coordinates coordinates, Queue<Tomato.Tomato.Coordinates> queue, int day) {
+    static void checkFourDirections(Coordinates coordinates, Queue<Coordinates> queue, int day) {
         for (int i = 0; i < 4; i++) {
             //check 4 directions
             int next_X = coordinates.x + directionX[i];
@@ -80,7 +80,7 @@ class Tomato {
                     //if next coordinates are in the storage array and the value is 0,
                     storage[next_X][next_Y] = 1;
                     //we change it to 1 and
-                    queue.add(new Tomato.Tomato.Coordinates(next_X, next_Y, day + 1));
+                    queue.add(new Coordinates(next_X, next_Y, day + 1));
                     //add to queue and show the epoch with incremented days
                     //by doing this, first day tomatoes are all riping its neighbors
                     //and we added the ripe neighbors till there was none left in the queue

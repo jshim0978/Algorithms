@@ -1,4 +1,4 @@
-package Bridging;
+package bridging;
 
 import java.util.*;
 import java.io.*;
@@ -10,6 +10,7 @@ class Bridging {
     static int[][] continents;
     static int[][] distance;
     //combination for (1,0)  (-1,0)  (0,1)  (0,-1)
+//    private static final int DIRECTION_SIZE = 4;
     private static final int[] DIRECTION_X = {1, -1, 0, 0};
     private static final int[] DIRECTION_Y = {0, 0, 1, -1};
 
@@ -53,14 +54,14 @@ class Bridging {
             for (int j = 0; j < size; j++) {
                 //if i haven't labeled the land on the continent,
                 if (map[i][j] == 1 && continents[i][j] == 0) {
-                    Queue<Bridging.Bridging.Coordinates> continentQueue = new LinkedList<>();
+                    Queue<Coordinates> continentQueue = new LinkedList<>();
                     //give the continent a number
                     continents[i][j] = ++continentNumber;
                     //and add it to the continent Queue
-                    continentQueue.add(new Bridging.Bridging.Coordinates(i, j));
+                    continentQueue.add(new Coordinates(i, j));
                     //we're checking 4 directions of a coordinate to see which continent they belong to
                     while (!continentQueue.isEmpty()) {
-                        Bridging.Bridging.Coordinates coordinates = continentQueue.remove();
+                        Coordinates coordinates = continentQueue.remove();
                         for (int k = 0; k < 4; k++) {
                             //this method does it
                             //if i reach the edge of a continent, the while loop increments the continent number so i know its a different continent
@@ -73,7 +74,7 @@ class Bridging {
         /*then we compute all distances */
 
         //make a new queue for distances
-        Queue<Bridging.Bridging.Coordinates> distanceQueue = new LinkedList<>();
+        Queue<Coordinates> distanceQueue = new LinkedList<>();
         //check every coordinates
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -82,7 +83,7 @@ class Bridging {
                 //if it is a land,
                 if (map[i][j] == 1) {
                     //add it to the queue
-                    distanceQueue.add(new Bridging.Bridging.Coordinates(i, j));
+                    distanceQueue.add(new Coordinates(i, j));
                     //and set the distance to 0 -> this marks all water -1 and all land 0 at first
                     distance[i][j] = 0;
                 }
@@ -90,7 +91,7 @@ class Bridging {
         }
         //for every land coordinate
         while (!distanceQueue.isEmpty()) {
-            Bridging.Bridging.Coordinates coordinates = distanceQueue.remove();
+            Coordinates coordinates = distanceQueue.remove();
             //figure out the distance of the neighboring coordinates
             for (int i = 0; i < 4; i++) {
                 identifyContinentsDistance(coordinates, distanceQueue);
@@ -100,7 +101,7 @@ class Bridging {
         System.out.println(findFastestRoute());
     }
 
-    static void identifyContinents(Bridging.Bridging.Coordinates coordinates, Queue<Bridging.Bridging.Coordinates> queue, int continentNumber) {
+    static void identifyContinents(Coordinates coordinates, Queue<Coordinates> queue, int continentNumber) {
         for (int i = 0; i < 4; i++) {
             //check 4 directions
             //first direction is (1,0) which is the coordinates right side
@@ -112,7 +113,7 @@ class Bridging {
                 //if the next land coordinate is not marked as a continent
                 if (map[nextX][nextY] == 1 && continents[nextX][nextY] == 0) {
                     //add it to the queue
-                    queue.add(new Bridging.Bridging.Coordinates(nextX, nextY));
+                    queue.add(new Coordinates(nextX, nextY));
                     //and give it a continent number
                     continents[nextX][nextY] = continentNumber;
                 }
@@ -120,7 +121,7 @@ class Bridging {
         }
     }
 
-    static void identifyContinentsDistance(Bridging.Bridging.Coordinates coordinates, Queue<Bridging.Bridging.Coordinates> queue) {
+    static void identifyContinentsDistance(Coordinates coordinates, Queue<Coordinates> queue) {
         for (int i = 0; i < 4; i++) {
             //check 4 directions
             //first direction is (1,0) which is the coordinates right side
@@ -137,7 +138,7 @@ class Bridging {
                     //this shows the distance to another continent of every coordinate
                     continents[nextX][nextY] = continents[coordinates.x][coordinates.y];
                     //and add these coordinates to the queue, judging how much water there is between continents
-                    queue.add(new Bridging.Bridging.Coordinates(nextX, nextY));
+                    queue.add(new Coordinates(nextX, nextY));
                 }
             }
         }
